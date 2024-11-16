@@ -23,12 +23,18 @@
 #   Result: [ 0, 0, 3,  0, 5]
 # ==============================================================================
 relu:
-    li t0, 1             
+    li  t0, 1             
     blt a1, t0, error     
-    li t1, 0             
-
+    li   t4, 0        # current index
 loop_start:
-    # TODO: Add your own implementation
+    lw   t3, 0(a0)    # current value
+    bge  t3, zero, goback_relu
+    sw   zero, 0(a0)
+goback_relu:
+    addi a0, a0, 4
+    addi t4, t4, 1
+    blt  t4, a1 loop_start
+    ret
 
 error:
     li a0, 36          

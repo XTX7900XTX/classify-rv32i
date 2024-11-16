@@ -167,6 +167,33 @@ classify:
     lw t0, 0(s3)
     lw t1, 0(s8)
     # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
+    # addi sp, sp, -16
+    # sw   ra, 12(sp)
+    # sw   a0, 8(sp)
+    # sw   a1, 4(sp)
+    # # mul a0, a0, a1
+    # mv   a0, t0 
+    # mv   a1, t1
+    # jal  ra, mul_implement
+    # mv   a0, a0
+    # # done
+    # lw   ra, 12(sp)
+    # lw   a0, 8(sp)
+    # lw   a1, 4(sp)
+    # addi sp, sp, 16
+        li   a0, 0
+    mul_loop_1:
+        andi t2, t1, 1
+        beqz t2, skip_add_1
+        add  a0, a0, t0
+    skip_add_1:
+        slli t0, t0, 1
+        srli t1, t1, 1
+        bnez t1, mul_loop_1
+
+
+
+
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -205,6 +232,32 @@ classify:
     lw t1, 0(s8)
     # mul a1, t0, t1 # length of h array and set it as second argument
     # FIXME: Replace 'mul' with your own implementation
+    # addi sp, sp, -16
+    # sw   ra, 12(sp)
+    # sw   a0, 8(sp)
+    # sw   a1, 4(sp)
+    # # mul a0, a0, a1
+    # mv   a0, t0
+    # mv   a1, t1
+    # jal  ra, mul_implement
+    # mv   a1, a0
+    # # done
+    # lw   ra, 12(sp)
+    # lw   a0, 8(sp)
+    # lw   a1, 4(sp)
+    # addi sp, sp, 16
+        li   a1, 0
+    mul_loop_2:
+        andi t2, t1, 1
+        beqz t2, skip_add_2
+        add  a1, a1, t0
+    skip_add_2:
+        slli t0, t0, 1
+        srli t1, t1, 1
+        bnez t1, mul_loop_2
+
+
+
     
     jal relu
     
@@ -227,6 +280,33 @@ classify:
     lw t0, 0(s3)
     lw t1, 0(s6)
     # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
+    # addi sp, sp, -16
+    # sw   ra, 12(sp)
+    # sw   a0, 8(sp)
+    # sw   a1, 4(sp)
+    # # mul a0, a0, a1
+    # mv   a0, t0 
+    # mv   a1, t1
+    # jal  ra, mul_implement
+    # mv   a0, a0
+    # # done
+    # lw   ra, 12(sp)
+    # lw   a0, 8(sp)
+    # lw   a1, 4(sp)
+    # addi sp, sp, 16
+        li   a0, 0
+    mul_loop_3:
+        andi t2, t0, 1
+        beqz t2, skip_add_3
+        add  a0, a0, t1
+    skip_add_3:
+        slli t1, t1, 1
+        srli t0, t0, 1
+        bnez t0, mul_loop_3
+
+
+
+
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -286,8 +366,31 @@ classify:
     mv a0, s10 # load o array into first arg
     lw t0, 0(s3)
     lw t1, 0(s6)
-    mul a1, t0, t1 # load length of array into second arg
+    # mul a1, t0, t1 # load length of array into second arg
     # FIXME: Replace 'mul' with your own implementation
+    # addi sp, sp, -16
+    # sw   ra, 12(sp)
+    # sw   a0, 8(sp)
+    # sw   a1, 4(sp)
+    # # mul a0, a0, a1
+    # mv   a0, t0 
+    # mv   a1, t1
+    # jal  ra, mul_implement
+    # mv   a1, a0
+    # # done
+    # lw   ra, 12(sp)
+    # lw   a0, 8(sp)
+    # lw   a1, 4(sp)
+    # addi sp, sp, 16
+        li   a1, 0
+    mul_loop_4:
+        andi t2, t1, 1
+        beqz t2, skip_add_4
+        add  a1, a1, t0
+    skip_add_4:
+        slli t0, t0, 1
+        srli t1, t1, 1
+        bnez t1, mul_loop_4
     
     jal argmax
     
@@ -384,3 +487,28 @@ error_args:
 error_malloc:
     li a0, 26
     j exit
+
+
+
+# mul_implement:
+#     addi sp sp -16
+#     sw ra, 12(sp)
+#     sw s1, 8(sp)
+#     sw s2, 4(sp)
+# # mul a0, a0, a1
+#     li   s1, 0
+# mul_loop:
+#     andi s2, a1, 1
+#     beqz s2, skip_add
+#     add  s1, s1, a0
+# skip_add:
+#     slli a0, a0, 1
+#     srli a1, a1, 1
+#     bnez a1, mul_loop
+# # done
+#     mv a0, s1
+#     lw ra, 12(sp)
+#     lw s1, 8(sp)
+#     lw s2, 4(sp)
+#     addi sp, sp, 16
+#     ret
