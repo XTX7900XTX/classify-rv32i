@@ -63,20 +63,6 @@ write_matrix:
 
     # mul s4, s2, s3   # s4 = total elements
     # FIXME: Replace 'mul' with your own implementation
-    # addi sp, sp, -16
-    # sw   ra, 12(sp)
-    # sw   a0, 8(sp)
-    # sw   a1, 4(sp)
-    # # mul a0, a0, a1
-    # mv   a0, s2 
-    # mv   a1, s3
-    # jal  ra, mul_implement
-    # mv   s4, a0
-    # # done
-    # lw   ra, 12(sp)
-    # lw   a0, 8(sp)
-    # lw   a1, 4(sp)
-    # addi sp, sp, 16
         li   s4, 0
     mul_loop:
         andi t2, s3, 1
@@ -136,29 +122,3 @@ error_exit:
     lw s4, 20(sp)
     addi sp, sp, 44
     j exit
-
-
-
-# mul_implement:
-#     addi sp sp -16
-#     sw ra, 12(sp)
-#     sw s1, 8(sp)
-#     sw s2, 4(sp)
-# # mul a0, a0, a1
-#     li   s1, 0
-# mul_loop:
-#     andi s2, a1, 1
-#     beqz s2, skip_add
-#     add  s1, s1, a0
-# skip_add:
-#     slli a0, a0, 1
-#     srli a1, a1, 1
-#     bnez a1, mul_loop
-# # done
-#     mv a0, s1
-#     lw ra, 12(sp)
-#     lw s1, 8(sp)
-#     lw s2, 4(sp)
-#     addi sp, sp, 16
-#     ret
-    
